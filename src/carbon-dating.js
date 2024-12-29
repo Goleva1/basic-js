@@ -18,17 +18,26 @@ const HALF_LIFE_PERIOD = 5730;
  *
  */
 function dateSample(sampleActivity) {
-  if (typeof sampleActivity !== 'string' || isNaN(sampleActivity)) {
-    return false;
-  }
-
+  // Преобразуем sampleActivity в число
   const activity = parseFloat(sampleActivity);
-  if (activity <= 0 || activity >= MODERN_ACTIVITY) {
+
+  // Проверяем, что sampleActivity является строкой, activity - конечное число, и находится в допустимом диапазоне
+  if (
+    typeof sampleActivity !== 'string' ||
+    !Number.isFinite(activity) ||
+    activity <= 0 ||
+    activity > MODERN_ACTIVITY
+  ) {
     return false;
   }
 
+  // Вычисляем константу распада
   const decayConstant = Math.LN2 / HALF_LIFE_PERIOD;
+
+  // Вычисляем возраст
   const age = Math.log(MODERN_ACTIVITY / activity) / decayConstant;
+
+  // Возвращаем округленный возраст
   return Math.ceil(age);
 }
 
